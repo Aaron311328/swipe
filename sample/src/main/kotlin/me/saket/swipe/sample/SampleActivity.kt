@@ -109,7 +109,7 @@ private fun SwipeableBoxPreview(modifier: Modifier = Modifier) {
     modifier = modifier,
     startActions = listOf(replyAll),
     endActions = listOf(snooze, archive),
-    swipeThreshold = 40.dp,
+    swipeThreshold = 240.dp,
     backgroundUntilSwipeThreshold = Color.GraySuit
   ) {
     BatmanIpsumItem(

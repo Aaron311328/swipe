@@ -2,6 +2,7 @@ package me.saket.swipe
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -64,7 +65,7 @@ fun SwipeAction(
   return SwipeAction(
     icon = {
       Image(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(16.dp).size(50.dp),
         painter = icon,
         contentDescription = null
       )

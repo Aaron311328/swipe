@@ -1,5 +1,7 @@
 package me.saket.swipe
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.MutatePriority
@@ -47,12 +49,30 @@ class SwipeableActionsState internal constructor() {
     offsetState.value += if (isAllowed) delta else delta / 10
   }
 
+  @SuppressLint("LongLogTag")
   internal suspend fun resetOffset() {
     draggableState.drag(MutatePriority.PreventUserInput) {
       isResettingOnRelease = true
       try {
         Animatable(offsetState.value).animateTo(targetValue = 0f, tween(durationMillis = animationDurationMs)) {
+          Log.d("rememberSwipeableActionsState","value:$value, offsetState.value:${offsetState.value}")
           dragBy(value - offsetState.value)
+          Log.d("rememberSwipeableActionsState","value - offsetState.value:${value - offsetState.value}")
+        }
+      } finally {
+        isResettingOnRelease = false
+      }
+    }
+  }
+
+  @SuppressLint("LongLogTag")
+  internal suspend fun moveOffset() {
+    draggableState.drag(MutatePriority.PreventUserInput) {
+      isResettingOnRelease = true
+      try {
+        Animatable(offsetState.value).animateTo(targetValue = -150f, tween(durationMillis = animationDurationMs)) {
+          Log.d("rememberSwipeableActionsState","value:$value, offsetState.value:${offsetState.value}")
+          dragBy(value - offsetState.value - 150f)
         }
       } finally {
         isResettingOnRelease = false

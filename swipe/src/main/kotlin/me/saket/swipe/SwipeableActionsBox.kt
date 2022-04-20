@@ -50,7 +50,7 @@ fun SwipeableActionsBox(
   state: SwipeableActionsState = rememberSwipeableActionsState(),
   startActions: List<SwipeAction> = emptyList(),
   endActions: List<SwipeAction> = emptyList(),
-  swipeThreshold: Dp = 40.dp,
+  swipeThreshold: Dp = 240.dp,
   backgroundUntilSwipeThreshold: Color = Color.DarkGray,
   content: @Composable BoxScope.() -> Unit
 ) = BoxWithConstraints(modifier) {
@@ -59,9 +59,9 @@ fun SwipeableActionsBox(
   val rightActions = if (isRtl) startActions else endActions
   val swipeThresholdPx = LocalDensity.current.run { swipeThreshold.toPx() }
 
-  val ripple = remember {
-    SwipeRippleState()
-  }
+//  val ripple = remember {
+//    SwipeRippleState()
+//  }
   val actions = remember(leftActions, rightActions) {
     ActionFinder(left = leftActions, right = rightActions)
   }
@@ -93,7 +93,7 @@ fun SwipeableActionsBox(
     modifier = Modifier
       .background(backgroundColor)
       .absoluteOffset { IntOffset(x = offset.roundToInt(), y = 0) }
-      .drawOverContent { ripple.draw(scope = this) }
+//      .drawOverContent { ripple.draw(scope = this) }
       .draggable(
         orientation = Horizontal,
         enabled = !state.isResettingOnRelease,
@@ -101,15 +101,20 @@ fun SwipeableActionsBox(
           if (thresholdCrossed) {
             swipedAction = visibleAction
             swipedAction!!.value.onSwipe()
-            ripple.animate(
-              action = swipedAction!!,
-              scope = this
-            )
+//            ripple.animate(
+//              action = swipedAction!!,
+//              scope = this
+//            )
+            launch {
+              state.moveOffset()
+            }
+          }else{
+            launch {
+              state.resetOffset()
+              swipedAction = null
+            }
           }
-          launch {
-            state.resetOffset()
-            swipedAction = null
-          }
+
         },
         state = state.draggableState,
       ),
